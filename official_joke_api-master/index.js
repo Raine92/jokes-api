@@ -12,7 +12,21 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Tervetuloa vitsi-API:iin — kokeile /jokes/random, /jokes/ten tai /jokes/count');
+  res.send(`<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Jokes API</title></head>
+<body>
+  <h1>Tervetuloa vitsi-API:iin</h1>
+  <p>Kokeile seuraavia endpointteja (avautuvat tuotantopalvelussa):</p>
+  <ul>
+    <li><a href="https://jokes-api-ls4z.onrender.com/jokes/random">/jokes/random</a></li>
+    <li><a href="https://jokes-api-ls4z.onrender.com/jokes/ten">/jokes/ten</a></li>
+    <li><a href="https://jokes-api-ls4z.onrender.com/jokes/count">/jokes/count</a></li>
+    <li><a href="https://jokes-api-ls4z.onrender.com/jokes/1">/jokes/1</a> (esim. id)</li>
+    <li><a href="https://jokes-api-ls4z.onrender.com/ping">/ping</a></li>
+  </ul>
+</body>
+</html>`);
 });
 
 app.get('/ping', (req, res) => {

@@ -3,7 +3,8 @@ const jokes = require('./jokes/index.json');
 let lastJokeId = 0;
 jokes.forEach(jk => jk.id = ++lastJokeId);
 
-const types = Array.from(new Set(jokes.map(joke => joke.type)));
+// kerää tyypit ja suodata pois undefined / falsy-arvot
+const types = Array.from(new Set(jokes.map(joke => joke.type).filter(Boolean)));
 
 const randomJoke = () => {
   return jokes[Math.floor(Math.random() * jokes.length)];
@@ -36,12 +37,13 @@ const jokeByType = (type, n) => {
   return randomN(jokes.filter(joke => joke.type === type), n);
 };
 
-const count = Object.keys(jokes).length;
+// yksinkertaisempi ja luotettavampi laskuri
+const count = jokes.length;
 
 /** 
  * @param {Number} id - joke id
  * @returns a single joke object or undefined
  */
-const jokeById = (id) => (jokes.filter(jk => jk.id === id)[0]);
+const jokeById = (id) => jokes.find(jk => jk.id === Number(id));
 
 module.exports = { jokes, types, randomJoke, randomN, randomTen, randomSelect, jokeById, jokeByType, count };

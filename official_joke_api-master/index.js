@@ -53,7 +53,14 @@ app.get('/jokes/:type/ten', (req, res) => {
   res.json(jokeByType(req.params.type, 10));
 });
 
-app.get('/jokes/:id', (req, res, next) => {
+// Siirretään /jokes/count ennen parametrireittejä
+app.get('/jokes/count', (req, res) => {
+  res.json({ count });
+});
+
+// rajoitetaan id-reitti hyväksymään vain numeeriset id:t
+// only numeric ids allowed
+app.get('/jokes/:id(\\d+)', (req, res, next) => {
   try {
     const { id } = req.params;
     const joke = jokeById(+id);
@@ -66,10 +73,6 @@ app.get('/jokes/:id', (req, res, next) => {
 
 app.get('/types', (req, res, next) => {
   res.json(types);
-});
-
-app.get('/jokes/count', (req, res) => {
-  res.json({ count });
 });
 
 app.use((err, req, res, next) => {

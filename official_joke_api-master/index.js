@@ -1,6 +1,6 @@
 const express = require('express');
 const LimitingMiddleware = require('limiting-middleware');
-const { types, randomJoke, randomTen, randomSelect, jokeByType, jokeById, count } = require('./handler');
+const { types, randomSelect, jokeByType, jokeById, count } = require('./handler');
 
 const app = express();
 
@@ -12,23 +12,15 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('Try /random_joke, /random_ten, /jokes/random, or /jokes/ten , /jokes/random/<any-number>');
+  res.send('Tervetuloa vitsi-API:iin — kokeile /jokes/random, /jokes/ten tai /jokes/count');
 });
 
 app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
-app.get('/random_joke', (req, res) => {
-  res.json(randomJoke());
-});
-
-app.get('/random_ten', (req, res) => {
-  res.json(randomTen());
-});
-
 app.get('/jokes/random', (req, res) => {
-  res.json(randomJoke());
+  res.json(randomSelect(1)[0]);
 });
 
 app.get("/jokes/random/:num", (req, res) => {
@@ -50,7 +42,7 @@ app.get("/jokes/random/:num", (req, res) => {
 });
 
 app.get('/jokes/ten', (req, res) => {
-  res.json(randomTen());
+  res.json(randomSelect(10));
 });
 
 app.get('/jokes/:type/random', (req, res) => {
@@ -74,7 +66,11 @@ app.get('/jokes/:id', (req, res, next) => {
 
 app.get('/types', (req, res, next) => {
   res.json(types);
-})
+});
+
+app.get('/jokes/count', (req, res) => {
+  res.json({ count });
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
